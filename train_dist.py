@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 '''
 Not running on CPUs !
 See Readmee.perlmutter
@@ -19,7 +19,7 @@ import torch.distributed as dist
 def get_parser():  
   parser = argparse.ArgumentParser()
   parser.add_argument("--design", default='m16lay', help='[.hpar.yaml] configuration of model and training')
-  parser.add_argument("-o","--outPath", default='/global/homes/b/balewski/prjs/tmp_neuInv/manual/', type=str)
+  parser.add_argument("-o","--outPath", default='/pscratch/sd/s/sdough/tmp_neuInv/TB_logs/', type=str)
   parser.add_argument("--facility", default='perlmutter', help='data location differes')
   parser.add_argument("--cellName", type=str, default='L23_PCcADpyr2', help="cell shortName ")
   parser.add_argument("--probsSelect",default=[0,1,2], type=int, nargs='+', help="list of probes, space separated")

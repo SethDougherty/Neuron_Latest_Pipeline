@@ -5,6 +5,6 @@
 #SBATCH -J params_range_exp
 #SBATCH -L SCRATCH,cfs
 #SBATCH -C cpu
-#SBATCH --output /pscratch/sd/a/asharoff/tmp_neuInv/slurm_logs/slurm-%j.out  # job-array encodding
+#SBATCH --output /pscratch/sd/s/sdough/tmp_neuInv/slurm_logs/slurm-%j.out  # job-array encodding
 
 python3 testing_stuff.py

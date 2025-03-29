@@ -10,7 +10,7 @@ import sys
 import subprocess
 import time
 
-THE_PATH = "/pscratch/sd/a/asharoff/data_dir_M1_Dom_"
+THE_PATH = "/pscratch/sd/s/sdough/data_dir_M1_Dom_"
 
 FINISHED = False
 super_counter = 0
@@ -169,7 +169,7 @@ while(FINISHED == False or super_counter != 2):
     print("Finished ML prepping for Analysis")
 
     os.chdir(currentDir)
-    subprocess.run("cp /pscratch/sd/a/asharoff/tmp_neuInv/bbp3/L5_TTPC1cADpyr0/"+job_id+"/the_data.npz /pscratch/sd/a/asharoff/NEW_DATA_OCT_25_2023/the_data.npz",shell=True)
+    subprocess.run("cp /pscratch/sd/s/sdough/tmp_neuInv/bbp3/L5_TTPC1cADpyr0/"+job_id+"/the_data.npz /pscratch/sd/s/sdough/NEW_DATA_OCT_25_2023/the_data.npz",shell=True)
     subprocess.run("shifter --image=nersc/pytorch:ngc-21.08-v2 ./fixed_threshold_mse_version.sh", shell=True)
     print("Finished Analysis prepping for DaCapo")
     super_counter += 1

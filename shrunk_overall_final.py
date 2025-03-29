@@ -10,7 +10,7 @@ import sys
 import subprocess
 import time
 
-THE_PATH = "/pscratch/sd/t/timshen/data_dir_M1_Dom_"
+THE_PATH = "/pscratch/sd/s/sdough/data_dir_M1_Dom_"
 
 FINISHED = False
 super_counter = 0
@@ -77,7 +77,7 @@ while(FINISHED == False and super_counter < 2):
 
     print("yeh")
     print(str(os.getcwd()))
-    the_result1 = subprocess.run('sbatch batchShifter_new.slr '+ THE_PATH+job_id, stdout=subprocess.PIPE, universal_newlines=True, shell=True)
+    the_result1 = subprocess.run('sbatch batchShifter.slr '+ THE_PATH+'_'+job_id, stdout=subprocess.PIPE, universal_newlines=True, shell=True)
     print(the_result1.stdout)
     the_result1 = str(the_result1.stdout).split()
     print(the_result1)
@@ -102,7 +102,8 @@ while(FINISHED == False and super_counter < 2):
     print("Finished ML prepping for Analysis")
 
     os.chdir(currentDir)
-    subprocess.run("cp /pscratch/sd/t/timshen/tmp_neuInv/bbp3/L5_TTPC1cADpyr0/"+job_id1+"/the_data.npz /pscratch/sd/t/timshen/Neuron_Latest_Pipeline/the_data.npz",shell=True)
+    # TODO: log slurm script shrunk_overall_final and MSE scripts
+    subprocess.run("cp /pscratch/sd/s/sdough/tmp_neuInv/bbp3/L5_TTPC1cADpyr0/"+job_id1+"/the_data.npz ./the_data.npz",shell=True)
     subprocess.run("shifter --image=nersc/pytorch:ngc-21.08-v2 ./fixed_threshold_mse_version.sh", shell=True)
 
     subprocess.run("mkdir "+trail_name+str(super_counter), shell=True)
@@ -111,7 +112,7 @@ while(FINISHED == False and super_counter < 2):
     subprocess.run("cp *.npy "+trail_name+str(super_counter)+"/", shell=True)
     subprocess.run("cp *.csv "+trail_name+str(super_counter)+"/", shell=True)
 
-    subprocess.run("cp /pscratch/sd/t/timshen/tmp_neuInv/bbp3/L5_TTPC1cADpyr0/"+str(job_id1)+"/out/*.png "+trail_name+str(super_counter)+"/", shell=True)
+    subprocess.run("cp /pscratch/sd/s/sdough/tmp_neuInv/bbp3/L5_TTPC1cADpyr0/"+str(job_id1)+"/out/*.png "+trail_name+str(super_counter)+"/", shell=True)
     if(that_param == "overall"):
         subprocess.run("python3 shrunk.py "+starter_csv+" "+trail_name+str(super_counter)+".csv", shell=True)
     else:
