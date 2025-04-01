@@ -7,6 +7,7 @@ import pickle
 import sys
 import matplotlib.pyplot as plt
 
+print("Reading parameter file...")
 x = open("before_automation_unit_params.csv").read().splitlines()
 the_names = []
 name = ""
@@ -24,10 +25,12 @@ for i_csv_reader in range(len(x)):
         the_dictionary_lb[name] = float(lb)
         the_dictionary_ub[name] = float(ub)
 
+print(f"Parameter file read successfully. {len(the_names)} parameters found.")
+
 THRESHOLD = 0.2
 b = np.load("the_data.npz")
-print(b["actual_val"])
-
+print("Actual values:", b["actual_val"])
+print("Actual values shape:", b["actual_val"].shape)
 arr_errors = []
 
 actual_val = []
@@ -56,6 +59,7 @@ region_dictionary = {}
 temp = 0
 other_temp = 0
 x_region = []
+print("Initializing region dictionary...")
 for i in range(NUM_REGIONS):
     if(i==0):
         temp = -1.0
@@ -66,12 +70,13 @@ for i in range(NUM_REGIONS):
     region_dictionary["Region "+str(i)] = [temp, other_temp]
     temp = round(other_temp,1)
     x_region.append(str(region_dictionary["Region "+str(i)]))
+print(f"Region dictionary initialized. {NUM_REGIONS} regions defined.")
 
-#for i in range(NUM_CHANNELS):
+print("Initializing region values...")
 for i in range(1):
     for q in range(NUM_REGIONS):
         region_val["channel"+str(ION_CHANNEL)]["Region "+str(q)] = [] 
-
+print("Region values initialized.")
 
 def parallelize(qq, num, bval1, bval2):
     if(abs(bval1 - bval2) > DELTA):
@@ -83,7 +88,7 @@ def parallelize(qq, num, bval1, bval2):
         return 0
 
 if __name__ == '__main__':
-
+    print("Processing data...")
     a = np.array([])
     b1 = np.array([])
     counter = 0
@@ -115,7 +120,7 @@ if __name__ == '__main__':
         #       #region_val["channel"+str(qq)][key].append((bval1, bval1 - bval2))
         #        arr_errors[counter].append(i)
         #        counter += 1
-
+    print("Computing MSE...")
     mean_list = np.array([])
     std_list = np.array([])
     std_mean_val = 0
@@ -129,10 +134,9 @@ if __name__ == '__main__':
         for iz in region_val["channel"+str(ION_CHANNEL)]["Region "+str(zz)]:
             arr = np.append(arr, iz[1])
         mean_array = np.append(mean_array, np.mean(arr))
+    print("Mean error computation complete. Sample mean errors:", mean_array)
 
 
-    print("mean_array")
-    print(mean_array)
     the_lister = the_names
 
     threshold = 0
@@ -145,7 +149,7 @@ if __name__ == '__main__':
     non_violating_regions = []
     np.save(str(ION_CHANNEL)+"_absolute.npy", mean_array)
 
-    print(total_sum)
+    print(f"Total sum of mean errors: {total_sum}")
     the_violating_regions = []
     non_violating_regions = []
     the_sum = 0
@@ -155,9 +159,8 @@ if __name__ == '__main__':
             the_sum += mean_array[i]
         else:
             non_violating_regions.append(str(i))
-    print("yo")
-                
-        
+    print(f"Regions violating threshold: {len(the_violating_regions)}")
+    print(f"Regions not violating threshold: {len(non_violating_regions)}")
 
     plt.figure(figsize=(15,15))
     plt.ylim(0, 1)
