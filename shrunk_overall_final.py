@@ -40,21 +40,32 @@ while(FINISHED == False and super_counter < 2):
     the_array = the_result1.splitlines()
     job_id = str((the_array[len(the_array)-2]))
 
+    max_retries = 5  # Number of times to retry on failure
+    retry_delay = 10
+    retry_count = 0
     while True:
         # Use subprocess to run the squeue command and capture its output
         result = subprocess.run(['squeue', '--format', '%T', '--noheader', '-j', job_id], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         result1 = result.stdout.decode().strip()
         print(result1)
 
-        if result.returncode != 0:
-            print("Error occurred while checking job status.")
+        if result.returncode == 0:
+            if result1 == "":  # Job finished
+                print("Job", job_id, "has finished.")
+                break
+            else:
+                retry_count = 0  # Reset retry count if command succeeds
+            
+        else:
+            print(f"SLURM error occurred. Retrying {retry_count + 1}/{max_retries}...")
             print(result.stderr)
-            break
 
-        # Check if the job is still in the queue
-        if result1 == "":
-            print("Job", job_id, "has finished.")
-            break
+            retry_count += 1
+            if retry_count >= max_retries:
+                print("Error: SLURM job status check failed after multiple retries.")
+                break
+
+            time.sleep(retry_delay)  # Wait before retrying      
     os.chdir(currentDir)
     print("Finished data gen prepping for preprocessing")
 

@@ -179,6 +179,6 @@ if __name__ == '__main__':
     plt.ylabel('Absolute Avg Error')
     plt.title('Absolute AVG Error vs Region with Threshold '+the_lister[ION_CHANNEL])
     plt.savefig('Absolute_AVG_ION_CHANNEL_'+the_lister[ION_CHANNEL]+'_the_data2_mse_'+'.png')
-    print("DONE")
+    print("Done with MSE thresholding")
     
 

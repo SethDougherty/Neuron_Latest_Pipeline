@@ -10,9 +10,11 @@ import sys
 import subprocess
 import time
  
+print("shrunk started.") 
 starter_csv = sys.argv[1]
 ender_csv = sys.argv[2]
 
+print("Reading starter CSV...")
 x = open(starter_csv).read().splitlines()
   
 the_names = []
@@ -31,6 +33,7 @@ for i_csv_reader in range(len(x)):
         the_names.append(name)
         the_dictionary_lb[name] = float(lb)
         the_dictionary_ub[name] = float(ub)
+print(f"Extracted {len(the_names)} parameters from starter CSV.")
 
 the_numbers = []
 lb_reduce = []
@@ -41,7 +44,7 @@ for i in the_names:
     lb_reduce = []
     ub_reduce = []
     with open(i+".txt") as file:
-        print(i)
+        print(f"Processing {i}.txt")
         the_numbers = file.readlines()
         the_numbers = [eval(il) for il in the_numbers]
         the_numbers.sort()
@@ -70,8 +73,10 @@ for i in the_names:
 
         the_dictionary_ub_mod[i] = the_dictionary_ub[i] - (float(len(ub_reduce)*0.1)/float(2))*(float(the_dictionary_ub[i])-float(the_dictionary_lb[i]))
         the_dictionary_lb_mod[i] = the_dictionary_lb[i] + (float(len(lb_reduce)*0.1)/float(2))*(float(the_dictionary_ub[i])-float(the_dictionary_lb[i]))
+        print(f"Updated bounds for {i}: LB={the_dictionary_lb_mod[i]}, UB={the_dictionary_ub_mod[i]}")
 
-print(the_dictionary_ub_mod)
+
+print("Writing to ender CSV...")
 f = open(ender_csv, "w")
 f.write('Parameters,LB,UB\n')
 for i_name in range(len(the_names)):
@@ -80,6 +85,7 @@ for i_name in range(len(the_names)):
         break
     f.write('\n')
 
+print("Script completed successfully.")
 
 
            
