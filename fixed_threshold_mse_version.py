@@ -7,8 +7,8 @@ import pickle
 import sys
 import matplotlib.pyplot as plt
 
-print("Reading parameter file...")
-x = open("before_automation_unit_params.csv").read().splitlines()
+# x = open("before_automation_unit_params.csv").read().splitlines()
+x = open("/pscratch/sd/s/sdough/Neuron_Latest_Pipeline/DL4neurons2/unit_params.csv").read().splitlines()
 the_names = []
 name = ""
 lb = ""
@@ -25,9 +25,7 @@ for i_csv_reader in range(len(x)):
         the_dictionary_lb[name] = float(lb)
         the_dictionary_ub[name] = float(ub)
 
-print(f"Parameter file read successfully. {len(the_names)} parameters found.")
-
-THRESHOLD = 0.2
+THRESHOLD = 0.05
 b = np.load("the_data.npz")
 print("Actual values:", b["actual_val"])
 print("Actual values shape:", b["actual_val"].shape)
@@ -178,7 +176,7 @@ if __name__ == '__main__':
     plt.xlabel('Region')
     plt.ylabel('Absolute Avg Error')
     plt.title('Absolute AVG Error vs Region with Threshold '+the_lister[ION_CHANNEL])
-    plt.savefig('Absolute_AVG_ION_CHANNEL_'+the_lister[ION_CHANNEL]+'_the_data2_mse_'+'.png')
-    print("Done with MSE thresholding")
+    plt.savefig('Absolute_AVG_ION_CHANNEL_0.005_'+the_lister[ION_CHANNEL]+'_the_data2_mse_'+'.png')
+    print("DONE")
     
 

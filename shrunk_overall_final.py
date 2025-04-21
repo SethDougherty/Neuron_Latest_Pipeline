@@ -65,7 +65,7 @@ while(FINISHED == False and super_counter < 2):
                 print("Error: SLURM job status check failed after multiple retries.")
                 break
 
-            time.sleep(retry_delay)  # Wait before retrying      
+            time.sleep(retry_delay)  # Wait before retrying 
     os.chdir(currentDir)
     print("Finished data gen prepping for preprocessing")
 
@@ -113,7 +113,6 @@ while(FINISHED == False and super_counter < 2):
     print("Finished ML prepping for Analysis")
 
     os.chdir(currentDir)
-    # TODO: log slurm script shrunk_overall_final and MSE scripts
     subprocess.run("cp /pscratch/sd/s/sdough/tmp_neuInv/bbp3/L5_TTPC1cADpyr0/"+job_id1+"/the_data.npz ./the_data.npz",shell=True)
     subprocess.run("shifter --image=nersc/pytorch:ngc-21.08-v2 ./fixed_threshold_mse_version.sh", shell=True)
 
